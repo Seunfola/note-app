@@ -23,7 +23,7 @@ note.push(newNote2)
 console.log(note);
 
 note.map((note)=>{
-    return note
+    console.log(i, note.title,note.body)
 })
 const noteReady = JSON.stringify(note)
 
