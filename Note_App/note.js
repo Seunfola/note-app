@@ -28,7 +28,7 @@ yargs.command({
             type: "strings"
         },
     },
-    handler: function (argv) {
+    handler(argv) {
         console.log(argv.id);
         console.log(argv.title);
         console.log(argv.body)
@@ -60,10 +60,10 @@ yargs.command({
         },
 
     },
-    handler: function (argv) {
+    handler(argv) {
         console.log(argv.title);
         // console.log(argv.body);
-        note.filter((notes) => { notes.id !== id })
+        notes = notes.filter((note) => { note.id !== id })
         // console.log(`successfully deleted ${title}`); 
 
         const noteJson = fs.readFileSync(noteJsonDir, "utf-8");
@@ -73,15 +73,63 @@ yargs.command({
             title: argv.title,
             body: argv.body
         }
-        notes.push(newNotes)
+        const note = notes.push(newNotes)
         const updateNotes = JSON.stringify(notes);
         fs.writeFileSync(noteJsonDir, updateNotes);
-        console.log(`successfully added ${argv.id}`)
-        console.log(`successfully added ${argv.title}`)
+        if (note) {
+            console.log(`${note.title
+                }.${note.body}`)
+        } else {
+            console.log(`Note with the ${note.title
+                } ${note.body}not Found`)
+        }
+
     }
+}
 
+);
+yargs.command({
+    command: "List",
+    describe: "List Note",
+
+
+    handler(argv) {
+
+        const noteJson = fs.readFileSync(noteJsonDir, "utf-8");
+        const notes = JSON.parse(noteJson);
+        notes.map((note, i) => {
+            console.log(`${i + 1}. ${note.title}
+    "${note.body}`)
+        })
+    }
 });
+yargs.command({
+    command: "Read",
+    describe: "Remove Note",
+    builder: {
+        title: {
+            describe: "Note Title",
+            demandOption: true,
+            type: "strings"
+        },
 
+    },
+    handler(argv) {
+        const title = argv.title;
+        const noteJson = fs.readFileSync(noteJsonDir, "utf-8");
+        const notes = JSON.parse(noteJson);
+        const note = notes.find((note) => note.title === title);
+
+        if (note) {
+            console.log(`${note.title
+                }. ${note.body}`)
+        } else {
+            console.log(`Note with the ${note.title
+                }not Found`)
+        }
+
+    }
+})
 yargs.parse();
 
 
