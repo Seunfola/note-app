@@ -63,7 +63,7 @@ yargs.command({
     handler: function (argv) {
         console.log(argv.title);
         // console.log(argv.body);
-        note.filter((notes) => { notes.title !== title })
+        note.filter((notes) => { notes.id !== id })
         // console.log(`successfully deleted ${title}`); 
 
         const noteJson = fs.readFileSync(noteJsonDir, "utf-8");
@@ -82,7 +82,7 @@ yargs.command({
 
 });
 
-yargs.parse()
+yargs.parse();
 
 
 
